@@ -16,7 +16,8 @@ bl_info = {
     "category" : "Development",
     "author" : "Sven Fraeys",
     "wiki_url": "https://github.com/svenfraeys/SublimeBlender",
-    "version": (1, 1, 1)
+    "version": (1, 1, 1),
+    "blender": (2, 80, 0)
 }
 
 import sys
@@ -340,10 +341,10 @@ class SublimeBlenderControlThread(threading.Thread):
                 
         sb_output("Control THREAD: finished")
                         
-class SublimeBlenderOpenConnection(bpy.types.Operator):
+class TEXT_OT_sublime_open_connection(bpy.types.Operator):
     """SublimeBlender Open Connecion Start
     """
-    bl_idname = "wm.sublimeblenderopenconnection"
+    bl_idname = "wm.sublime_open_connection"
     bl_label = "Sublime Open Connection"
     bl_description = "Open the connection for SublimeBlender"
 
@@ -392,6 +393,7 @@ class TEXT_PT_sublime(bpy.types.Panel):
     bl_space_type = 'TEXT_EDITOR'
     bl_region_type = 'UI'
     bl_label = "SublimeBlender"
+    bl_idname = "OBJECT_MT_custom_menu"
 
     def draw(self, context):
         """draw the gui
@@ -399,17 +401,17 @@ class TEXT_PT_sublime(bpy.types.Panel):
         layout = self.layout
         st = context.space_data
         col = layout.column(align=True)
-        col.operator(SublimeBlenderOpenConnection.bl_idname)
+        col.operator(TEXT_OT_sublime_open_connection.bl_idname)
 
 def menu_func(self, context):
     """add actions to the menu
     """
-    self.layout.operator(SublimeBlenderOpenConnection.bl_idname)
+    self.layout.operator(TEXT_OT_sublime_open_connection.bl_idname)
 
 def register():
     """register the plugin
     """
-    bpy.utils.register_class(SublimeBlenderOpenConnection)
+    bpy.utils.register_class(TEXT_OT_sublime_open_connection)
     bpy.utils.register_class(TEXT_PT_sublime)
     
     bpy.types.TEXT_MT_edit.append(menu_func)
@@ -417,7 +419,7 @@ def register():
 def unregister():
     """unregister given plugin
     """
-    bpy.utils.unregister_class(SublimeBlenderOpenConnection)
+    bpy.utils.unregister_class(TEXT_OT_sublime_open_connection)
     bpy.utils.unregister_class(TEXT_PT_sublime)
                 
 if __name__ == "__main__":
